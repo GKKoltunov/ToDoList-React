@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Button } from '../Button/Button';
+
 
 
 export const Task = ({
@@ -15,11 +16,11 @@ export const Task = ({
   const [edit, setEdit] = useState(false);
   const [value, setValue] = useState(text);
 
-  function changeTask() {
+  function changeTask() { //реакция на карандаш
     setIsEdit(!isEdit);
   }
 
-  function saveTask() {
+  function saveTask() {// реакция на кнопку сохранить
     setEdit(edit);
     setIsEdit(edit);
     console.log(todos);
@@ -27,15 +28,16 @@ export const Task = ({
       window.localStorage.setItem("todo", json);
   }
 
-  function changeText(ev) {
+  function changeText(ev) { //реакция на ввод нового значения 
     setValue(ev.target.value);
       todos.map((el) => {
         if (el.text === value) {
          return el.text = ev.target.value;
         }
       })
-    
   }
+
+ 
 
   return (
     <li className="elem">
@@ -70,6 +72,7 @@ export const Task = ({
       <Button onClick={() => deleteTask(id)} className={"cross"}>
         ❌
       </Button>
+     
     </li>
   );
 };

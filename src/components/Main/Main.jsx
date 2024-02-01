@@ -1,14 +1,14 @@
+import { LangContext } from "../../providers/context/LangContext";
 import { Button } from "../Button/Button"
 import { Task } from "../Task/Task"
 import "./Main.css"
 
-import React from 'react'
+import React, { useContext } from 'react'
 
 export const Main = ({
   inputValue,
   add,
   addTask,
-  li,
   todos,
   deleteAll,
   noCheck,
@@ -17,6 +17,9 @@ export const Main = ({
   changeTask,
   setTodos,
 }) => {
+
+  const { toggleLang, lang } = useContext(LangContext)
+  
   return (
     <main>
       <div className="container">
@@ -26,10 +29,10 @@ export const Main = ({
             value={inputValue}
             className="input"
             type="text"
-            placeholder="Введите название "
+            placeholder={lang==="ru"?"Введите название ":"Input name"}
           />
           <Button onClick={addTask} className={"add"}>
-            Добавить
+            {lang === "ru" ? "Добавить" : "Add"}
           </Button>
         </form>
 
@@ -59,10 +62,13 @@ export const Main = ({
           </div>
           <div className="delete">
             <Button onClick={noCheck} className={"delete-cmpl"}>
-              Удалить завершенные
+             {lang==="ru"? 'Удалить завершенные': "Delete checked"} 
+            </Button>
+            <Button onClick={toggleLang} className="lang">
+              {lang === "ru" ? "Русский" : "English"}
             </Button>
             <Button onClick={deleteAll} className={"delete-all"}>
-              Удалить все
+             {lang==="ru" ? "Удалить все": "Delete all"} 
             </Button>
           </div>
         </div>

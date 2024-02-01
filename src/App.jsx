@@ -2,25 +2,20 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { Header } from "./components/Header/Header";
 import { Main } from "./components/Main/Main";
-import { Task } from "./components/Task/Task";
-import { Button } from "./components/Button/Button";
-  
+import { LangProvider } from "./providers/LangProvider";
+
+const start= JSON.parse(localStorage.getItem("todo")) ?? []
+
 function App() {
+  const [inputValue, setInputValue] = useState("");
+  const [todos, setTodos] = useState(start);
 
-const [inputValue, setInputValue] = useState("");
-  const [todos, setTodos] = useState([]);
-  
+
   useEffect(() => {
-   setTodos(JSON.parse(localStorage.getItem('todo'))||[])
-  },[])
-
-  useEffect(()=>{
     let json = JSON.stringify(todos);
     window.localStorage.setItem("todo", json);
-  },[todos])
+  }, [todos]);
 
-  
- console.log(todos);
   function add(ev) {
     setInputValue(ev.target.value);
   }
@@ -39,7 +34,6 @@ const [inputValue, setInputValue] = useState("");
       ]);
       setInputValue("");
     }
-   
   };
 
   function deleteTask(id) {
@@ -54,7 +48,8 @@ const [inputValue, setInputValue] = useState("");
     setTodos(deleted);
   }
 
-  function checked(id) {  //реакция на чекбокс
+  function checked(id) {
+    //реакция на чекбокс
     setTodos(
       todos.map((el) => {
         if (el.id === id) {
@@ -66,30 +61,30 @@ const [inputValue, setInputValue] = useState("");
     );
   }
 
-  function deleteCheck(id) { //удаление выполненых задач
+  function deleteCheck(id) {
+    //удаление выполненых задач
     const noCheck = todos.filter((el) => el.isCompleted !== true);
     setTodos(noCheck);
   }
-  
 
-
-  
   return (
     <>
-      <Header />
-      <Main
-        checked={checked}
-        addTask={addTask}
-        inputValue={inputValue}
-        add={add}
-        deleteTask={deleteTask}
-        todos={todos}
-        deleteAll={deleteAll}
-        noCheck={deleteCheck}
-        setTodos={setTodos}
-      />
+      <LangProvider>
+        <Header />
+        <Main
+          checked={checked}
+          addTask={addTask}
+          inputValue={inputValue}
+          add={add}
+          deleteTask={deleteTask}
+          todos={todos}
+          deleteAll={deleteAll}
+          noCheck={deleteCheck}
+          setTodos={setTodos}
+        />
+      </LangProvider>
     </>
   );
-  }
+}
 
 export default App;
