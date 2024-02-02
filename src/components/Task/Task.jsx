@@ -1,43 +1,48 @@
 import React, { useContext, useState } from 'react'
 import { Button } from '../Button/Button';
+import { TaskContext } from '../../providers/context/TaskContext';
 
 
-
-export const Task = ({
-  text,
-  id,
-  isCompleted,
-  deleteTask,
-  checked,
-  todos,
-  setTodos,
-}) => {
+export const Task = ({ text, isCompleted, id }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [edit, setEdit] = useState(false);
   const [value, setValue] = useState(text);
 
-  function changeTask() { //реакция на карандаш
+  const {
+    add,
+    addTask,
+    deleteTask,
+    deleteAll,
+    checked,
+    deleteCheck,
+    inputValue,
+    todos,
+    li,
+  } = useContext(TaskContext);
+
+  function changeTask() {
+    //реакция на карандаш
     setIsEdit(!isEdit);
   }
 
-  function saveTask() {// реакция на кнопку сохранить
+  function saveTask() {
+    // реакция на кнопку сохранить
     setEdit(edit);
     setIsEdit(edit);
     console.log(todos);
     let json = JSON.stringify(todos);
-      window.localStorage.setItem("todo", json);
+    window.localStorage.setItem("todo", json);
   }
 
-  function changeText(ev) { //реакция на ввод нового значения 
+  function changeText(ev) {
+    //реакция на ввод нового значения
     setValue(ev.target.value);
-      todos.map((el) => {
-        if (el.text === value) {
-         return el.text = ev.target.value;
-        }
-      })
+    todos.map((el) => {
+      if (el.text === value) {
+        return (el.text = ev.target.value);
+      }
+    });
   }
-
- 
 
   return (
     <li className="elem">
@@ -55,8 +60,8 @@ export const Task = ({
         <input
           onChange={changeText}
           className="change-text"
-            type="text"
-            value={value}
+          type="text"
+          value={value}
           // defaultValue={text}
         ></input>
       )}
@@ -72,7 +77,6 @@ export const Task = ({
       <Button onClick={() => deleteTask(id)} className={"cross"}>
         ❌
       </Button>
-     
     </li>
   );
 };
